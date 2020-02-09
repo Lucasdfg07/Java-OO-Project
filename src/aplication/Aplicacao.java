@@ -1,11 +1,22 @@
 package aplication;
 
 import factories.ElementoGraficoFactory;
+import factories.ElementoGraficoImagemFactory;
+import factories.ElementoGraficoTextoFactory;
 import factories.JogadorFactory;
+import factories.JogadorFactoryImpl;
 import factories.PalavraFactory;
+import factories.PalavraFactoryImpl;
 import factories.RodadaFactory;
+import factories.RodadaSorteioFactory;
 import factories.TemaFactory;
+import factories.TemaFactoryImpl;
+import model.Palavra;
+import model.Rodada;
+import repositories.BDRRepositoryFactory;
+import repositories.MemoriaRepositoryFactory;
 import repositories.RepositoryFactory;
+import services.PalavraAppService;
 
 public class Aplicacao {
 	
@@ -31,7 +42,23 @@ public class Aplicacao {
 	}
 	
 	public void setup() {
+		RepositoryFactory repo = this.getRepositoryFactory();
 		
+		TemaFactoryImpl.createSoleInstance(repo.getTemaRepository());
+		
+		PalavraFactoryImpl.createSoleInstance(repo.getPalavraRepository());
+		
+		JogadorFactoryImpl.createSoleInstance(repo.getJogadorRepository());
+		
+		RodadaSorteioFactory.createSoleInstance(repo.getRodadaRepository(), repo.getPalavraRepository(), repo.getTemaRepository());
+		
+		PalavraAppService.createSoleInstance(repo.getPalavraRepository(), repo.getPalavraFactory());
+		
+		ElementoGraficoFactory elemento = this.getElementoGraficoFactory();
+		
+		Palavra.setLetraFactory(elemento);
+		
+		Rodada.setBonecoFactory(elemento);
 	}
 	
 	public String[] getTiposRepositoryFactory() {
@@ -39,12 +66,22 @@ public class Aplicacao {
 	}
 	
 	public void setTipoRepositoryFactory(String tipo) {
+		this.setup();
 		this.tipoRepositoryFactory = tipo;
-		
 	}
 	
 	public RepositoryFactory getRepositoryFactory() {
-		return null;
+		RepositoryFactory factory = null;
+		
+		String tipo = this.tipoRepositoryFactory;
+		
+		if (tipo.equals("memoria")) {
+			factory = MemoriaRepositoryFactory.getSoleInstance();
+		} else {
+			factory = BDRRepositoryFactory.getSoleInstance();
+		}
+		
+		return factory;
 	}
 	
 	public String[] getTiposElementoGraficoFactory() {
@@ -52,11 +89,22 @@ public class Aplicacao {
 	}
 	
 	public void setTipoElementoGraficoFactory(String stipo) {
+		this.setup();
 		this.tipoElementoGraficoFactory = stipo;
 	}
 	
 	public ElementoGraficoFactory getElementoGraficoFactory() {
-		return null;
+		ElementoGraficoFactory factory = null;
+		
+		String tipo = this.tipoElementoGraficoFactory;
+		
+		if(tipo.equals("texto")) {
+			factory = ElementoGraficoTextoFactory.getSoleInstance();
+		} else {
+			factory = ElementoGraficoImagemFactory.getSoleInstance();
+		}
+		
+		return factory;
 	}
 	
 	public String[] getTiposRodadaFactory() {
@@ -64,22 +112,29 @@ public class Aplicacao {
 	}
 	
 	public void setTipoRodadaFactory(String tipo) {
+		this.setup();
 		tipoRodadaFactory = tipo;
 	}
 	
 	public RodadaFactory getRodadaFactory() {
-		return null;
+		RodadaFactory factory = null;
+		
+		if (this.tipoRodadaFactory.equals("sorteio")) {
+			factory = RodadaSorteioFactory.getSoleInstance();
+		};
+		
+		return factory;
 	}
 	
 	public TemaFactory getTemaFactory() {
-		return null;
+		return TemaFactoryImpl.getSoleInstance();
 	}
 	
 	public PalavraFactory getPalavraFactory() {
-		return null;
+		return PalavraFactoryImpl.getSoleInstance();
 	}
 	
 	public JogadorFactory getJogadorFactory() {
-		return null;
+		return JogadorFactoryImpl.getSoleInstance(); 
 	}
 }

@@ -10,7 +10,8 @@ public class ElementoGraficoImagemFactory implements ElementoGraficoFactory {
 	private LetraImagemFactory letraImagemFactory;
 	
 	private ElementoGraficoImagemFactory() {
-		
+		letraImagemFactory = LetraImagemFactory.getSoleInstance();
+		bonecoImagemFactory = BonecoImagemFactory.getSoleInstance();
 	}
 	
 	public static ElementoGraficoImagemFactory getSoleInstance() {

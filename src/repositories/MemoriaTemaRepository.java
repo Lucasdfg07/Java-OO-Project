@@ -30,7 +30,7 @@ public class MemoriaTemaRepository implements TemaRepository {
 	}
 
 	@Override
-	public Tema[] getPorNome(Tema tema) {
+	public Tema[] getPorNome(String nome) {
 		// TODO Auto-generated method stub
 		return null;
 	}

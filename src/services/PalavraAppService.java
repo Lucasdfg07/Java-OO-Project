@@ -1,14 +1,12 @@
 package services;
 
-import model.Jogador;
 import model.Palavra;
-import model.Rodada;
 import factories.PalavraFactory;
-import factories.RodadaFactory;
 import repositories.PalavraRepository;
 import repositories.RepositoryException;
 
 public class PalavraAppService {
+	
 	private static PalavraAppService soleInstance;
 	
 	private PalavraRepository palavraRepository;
@@ -19,8 +17,8 @@ public class PalavraAppService {
 		this.palavraFactory = palavraFactory;
 	}
 	
-	public void createSoleInstance(PalavraRepository palavraRepository, PalavraFactory palavraFactory) {
-		
+	public static void createSoleInstance(PalavraRepository palavraRepository, PalavraFactory palavraFactory) {
+		soleInstance = new PalavraAppService(palavraRepository, palavraFactory);
 	}
 	
 	public static PalavraAppService getSoleInstance() {
@@ -32,10 +30,8 @@ public class PalavraAppService {
 	
 	public void novaPalavra(Palavra palavra) throws RepositoryException{
 		try {
-			
 			palavraRepository.inserir(palavra);	
 		} catch (Exception e) {
-			
 			System.out.print(e.getMessage());
 		}
 	}

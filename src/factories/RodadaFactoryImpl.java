@@ -31,7 +31,4 @@ public abstract class RodadaFactoryImpl implements RodadaFactory {
 	protected PalavraRepository getPalavraRepository() {
 		return palavraRepository;
 	}
-	
-	
-
 }

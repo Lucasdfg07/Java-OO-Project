@@ -31,27 +31,49 @@ public class RodadaAppService {
 		return soleInstance;
 	}
 	
-//	public Rodada novaRodada(int idJogador) throws JogadorNaoEncontradoException{
-//		try {
-//			jogadorRepository.inserir(idJogador);	
-//		} catch (Exception e) {
-//			System.out.print(e.getMessage());
-//		}
-//	}
-//	
-//	public Rodada novaRodada(String nomeJogador) throws JogadorNaoEncontradoException{
-//		try {
-//			jogadorRepository.inserir(nomeJogador);	
-//		} catch (Exception e) {
-//			System.out.print(e.getMessage());
-//		}
-//	}
-	
-	public Rodada novaRodada(Jogador jogador) {
-		return rodadaFactory.getRodada(jogador);		
+	public int novaRodada1(String idJogador) throws JogadorNaoEncontradoException {
+		
+		int id = Integer.parseInt(idJogador);
+		
+		try {
+			Jogador retorno = jogadorRepository.getPorId(id);
+			return rodadaFactory.getRodada(retorno);
+			
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+		
+		return 0;
 	}
 	
-	public boolean salvarRodada(Rodada rodada) throws RepositoryException{
-		return false;
+	public int novaRodada(String nomeJogador) throws JogadorNaoEncontradoException{
+		
+		try {
+			Jogador[] retorno = jogadorRepository.getPorNome(nomeJogador);
+			return rodadaFactory.getRodada(retorno);
+			
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+		
+		return 0;
+	}
+	
+	public Rodada novaRodada(Jogador jogador) {
+		try {
+			jogadorRepository.inserir(jogador);	
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+		
+		return null;
+	}
+	
+	public void salvarRodada(Rodada rodada) throws RepositoryException{
+		try {
+			rodadaRepository.inserir(rodada);
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
 	}
 }

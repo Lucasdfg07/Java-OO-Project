@@ -26,6 +26,7 @@ public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory 
 	}
 	
 	public static void createSoleInstance(PalavraRepository repository) {
+		
 	}
 	
 	@SuppressWarnings("unused")

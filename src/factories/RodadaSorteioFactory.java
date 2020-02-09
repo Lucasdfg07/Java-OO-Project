@@ -8,15 +8,17 @@ import repositories.TemaRepository;
 
 public class RodadaSorteioFactory extends RodadaFactoryImpl {
 	
+	private Rodada r;
+	
 	private static RodadaSorteioFactory soleInstance;
 
 	private RodadaSorteioFactory(RodadaRepository repository, TemaRepository temaRepository, PalavraRepository palavraRepository) {
 		super(repository, temaRepository, palavraRepository);
 	}
 	
-	public static void createSoleInstance(RodadaRepository repository, TemaRepository temaRepository)
-	{			
-		new RodadaSorteioFactory(repository, temaRepository, palavraRepository);
+	public static void createSoleInstance(RodadaRepository rodadaRepository, PalavraRepository palavraRepository, TemaRepository temaRepository) {
+		// TODO Auto-generated method stub
+		soleInstance = new RodadaSorteioFactory(repository, temaRepository, palavraRepository);
 	}
 	
 	public static RodadaSorteioFactory getSoleInstance() {
@@ -26,8 +28,14 @@ public class RodadaSorteioFactory extends RodadaFactoryImpl {
 		return soleInstance;
 	}
 	
-	public Rodada getRodada(Jogador jogador) {
-		return null;
+	public int getRodada(Jogador jogador) {
+		return r.getQtdeTentativas();
+	}
+
+	@Override
+	public int getRodada(Jogador[] retorno) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

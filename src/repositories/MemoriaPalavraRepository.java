@@ -2,7 +2,6 @@ package repositories;
 
 import java.util.HashMap;
 import java.util.Iterator;
-
 import model.Palavra;
 import model.Tema;
 
@@ -11,6 +10,8 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 	private static MemoriaPalavraRepository soleInstance;
 	
 	private HashMap<Long, Palavra> pool = new HashMap<Long, Palavra>();
+	
+	private Palavra[] palavra;
 	
 	private MemoriaPalavraRepository() {
 		
@@ -32,13 +33,23 @@ public class MemoriaPalavraRepository implements PalavraRepository {
 	@Override
 	public Palavra getPorId(long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return pool.get(id);
 	}
 
 	@Override
 	public Palavra[] getPorTema(Tema tema) {
 		// TODO Auto-generated method stub
-		return null;
+		palavra = null;
+		
+		int i=0;
+		
+		for (Palavra r : pool.values()) {
+			if(r.getTema().equals(tema))
+				palavra[i] = r;
+				i++;
+		    }
+		
+		return palavra;
 	}
 
 	@Override

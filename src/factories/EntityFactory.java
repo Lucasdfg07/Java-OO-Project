@@ -19,5 +19,4 @@ public abstract class EntityFactory {
 	protected long getProximoId() {
 		return repository.getProximoId();
 	}
-
 }

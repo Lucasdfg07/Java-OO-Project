@@ -32,7 +32,6 @@ public class MemoriaRodadaRepository implements RodadaRepository {
 
 	@Override
 	public Rodada getPorId(long id) {
-		
 		return pool.get(id);
 	}
 

@@ -1,17 +1,19 @@
 package repositories;
 
-public class MemoriaRepositryFactory implements RepositoryFactory {
+import factories.PalavraFactory;
+
+public class MemoriaRepositoryFactory implements RepositoryFactory {
 	
 	
-	private static MemoriaRepositryFactory soleInstance;
+	private static MemoriaRepositoryFactory soleInstance;
 	
-	private MemoriaRepositryFactory() {
+	private MemoriaRepositoryFactory() {
 		
 	}
 	
-	public static MemoriaRepositryFactory getSoleInstance() {
+	public static MemoriaRepositoryFactory getSoleInstance() {
 		if(soleInstance == null)
-			soleInstance = new MemoriaRepositryFactory();
+			soleInstance = new MemoriaRepositoryFactory();
 		
 		return soleInstance;	
 	}
@@ -36,6 +38,12 @@ public class MemoriaRepositryFactory implements RepositoryFactory {
 
 	@Override
 	public JogadorRepository getJogadorRepository() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PalavraFactory getPalavraFactory() {
 		// TODO Auto-generated method stub
 		return null;
 	}

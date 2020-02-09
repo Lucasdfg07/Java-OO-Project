@@ -5,6 +5,7 @@ import model.Rodada;
 
 public interface RodadaFactory {
 	
-	public Rodada getRodada(Jogador jogador);
+	public int getRodada(Jogador[] retorno);
+	public int getRodada(Jogador retorno);
 
 }
