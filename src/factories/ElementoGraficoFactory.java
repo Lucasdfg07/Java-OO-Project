@@ -1,8 +1,7 @@
 package factories;
 
-import model.BonecoFactory;
-import model.LetraFactory;
+import models.BonecoFactory;
 
-public interface ElementoGraficoFactory extends BonecoFactory,LetraFactory {
+public interface ElementoGraficoFactory extends BonecoFactory, LetraFactory {
 
 }

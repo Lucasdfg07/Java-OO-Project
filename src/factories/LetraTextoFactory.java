@@ -1,25 +1,28 @@
 package factories;
 
-import model.Letra;
-import model.LetraTexto;
+import models.Letra;
+import models.LetraTexto;
 
 public class LetraTextoFactory extends LetraFactoryImpl {
+  
+  private static LetraTextoFactory soleInstance;
 
-	private static LetraTextoFactory soleInstance;
+  public static LetraTextoFactory getSoleInstance() {
+	  
+    if (soleInstance == null) {
+    	
+    	soleInstance = new LetraTextoFactory();
+    }
+
+    return soleInstance;
+  }
+
+  private LetraTextoFactory() {
+	  
+  }
+
+  protected Letra criarLetra(char codigo) {
 	
-	
-	private LetraTextoFactory() {
-		
-	}
-	
-	public static LetraTextoFactory getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new LetraTextoFactory();
-		
-		return soleInstance;
-	}
-	
-	protected Letra criarLetra(char codigo) {
-		return new LetraTexto(codigo);
-	}
+    return new LetraTexto(codigo);
+  }
 }

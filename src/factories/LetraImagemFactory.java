@@ -1,26 +1,26 @@
 package factories;
 
-import model.Letra;
-import model.LetraImagem;
+import models.Letra;
+import models.LetraImagem;
 
 public class LetraImagemFactory extends LetraFactoryImpl {
-	
-private static LetraImagemFactory soleInstance;
-	
-	private LetraImagemFactory() {
-		
-	}
-	
-	public static LetraImagemFactory getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new LetraImagemFactory();
-		
-		return soleInstance;
-	}
-	
-	protected Letra criarLetra(char codigo) {
-		return new LetraImagem(codigo);
-		
-	}
+  
+  private static LetraImagemFactory soleInstance;
 
+  public static LetraImagemFactory getSoleInstance() {
+	  
+    if (soleInstance == null) {
+      soleInstance = new LetraImagemFactory();
+    }
+ 
+    return soleInstance;
+  }
+
+  private LetraImagemFactory() {
+	  
+  }
+
+  protected Letra criarLetra(char codigo) {
+    return new LetraImagem(codigo);
+  }
 }

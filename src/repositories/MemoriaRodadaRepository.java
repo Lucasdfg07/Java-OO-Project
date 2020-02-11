@@ -1,73 +1,82 @@
 package repositories;
 
-import java.util.HashMap;
-import model.Jogador;
-import model.Rodada;
+import java.util.ArrayList;
+import java.util.List;
 
-
+import models.Jogador;
+import models.Rodada;
 
 public class MemoriaRodadaRepository implements RodadaRepository {
-	
-	
-	private static MemoriaRodadaRepository soleInstance;
-	private HashMap<Long, Rodada> pool = new HashMap<Long, Rodada>();
-	private Rodada[] resultados;
-	
-	private MemoriaRodadaRepository() {
-		
-	}
-	
-	public static MemoriaRodadaRepository getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new MemoriaRodadaRepository();
-		
-		return soleInstance;	
-	}
 
-	@Override
-	public long getProximoId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+  private static MemoriaRodadaRepository soleInstance = null;
 
-	@Override
-	public Rodada getPorId(long id) {
-		return pool.get(id);
-	}
+  public static MemoriaRodadaRepository getSoleInstance() {
+    if (soleInstance == null) {
+      soleInstance = new MemoriaRodadaRepository();
+    }
 
-	@Override
-	public Rodada[] getPorJogador(Jogador jogador) {
-		resultados = null;
-		
-		int i=0;
-		
-		for (Rodada r : pool.values()) {
-			if(r.getJogador().equals(jogador))
-				resultados[i] = r;
-				i++;
-		    }
-		
-		return resultados;
-	}
-	
+    return soleInstance;
+  }
 
-	@Override
-	public void inserir(Rodada rodada) throws RepositoryException {
-		this.pool.put(rodada.getId(), rodada);
+  private List<Rodada> pool;
 
-	}
+  private MemoriaRodadaRepository() {
+    pool = new ArrayList<>();
+  }
 
-	@Override
-	public void atualizar(Rodada rodada) throws RepositoryException {
-		this.pool.remove(rodada.getId());
-		this.pool.put(rodada.getId(), rodada);
+  @Override
+  public long getProximoId() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
 
-	}
+  @Override
+  public Rodada getPorId(Long id) {
+    for (Rodada rodada: pool) {
+      if (rodada.getId().equals(id)) {
+        return rodada;
+      }
+    }
 
-	@Override
-	public void remover(Rodada rodada) throws RepositoryException {
-		this.pool.remove(rodada.getId());
+    throw new RuntimeException("Não foi possível encontrar rodada com o id: " + id);
+  }
 
-	}
+  @Override
+  public List<Rodada> getPorJogador(Jogador jogador) {
+    List<Rodada> rodadas = new ArrayList<>();
 
+    for (Rodada rodada: pool) {
+      if (rodada.getJogador() == jogador) {
+        rodadas.add(rodada);
+      }
+    }
+
+    return rodadas;
+  }
+
+  @Override
+  public void inserir(Rodada rodada) throws RepositoryException {
+    if (pool.contains(rodada)) {
+      throw new RepositoryException("Essa rodada já está salvo no repositório");
+    }      
+    
+    pool.add(rodada);
+  }
+
+  @Override
+  public void atualizar(Rodada rodada) throws RepositoryException {
+    this.remover(rodada);
+    this.inserir(rodada);
+  }
+
+  @Override
+  public void remover(Rodada rodada) throws RepositoryException {
+    if (pool.contains(rodada)) {
+        pool.remove(rodada);
+    } else {
+        throw new RepositoryException("A rodada " + rodada + "não está presente no repositório");
+    }
+  }
+
+  
 }

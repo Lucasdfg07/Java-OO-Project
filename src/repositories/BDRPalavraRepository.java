@@ -1,66 +1,72 @@
 package repositories;
-import model.Palavra;
-import model.Tema;
+
+import java.util.List;
+
+import models.Palavra;
+import models.Tema;
+
 
 public class BDRPalavraRepository implements PalavraRepository {
-	
-private static BDRPalavraRepository soleInstance;
-	
-	private BDRPalavraRepository() {}
-	
-	public static BDRPalavraRepository getSoleInstance() {
-		if (soleInstance == null) {
-			soleInstance = new BDRPalavraRepository();
-		}
-		return soleInstance;
-	}
 
-	
-	@Override
-	public long getProximoId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+  private static BDRPalavraRepository soleInstance = null;
 
-	@Override
-	public Palavra getPalavra(String palavra) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public static BDRPalavraRepository getSoleInstance() {
+    if (soleInstance == null) {
+      soleInstance = new BDRPalavraRepository();
+    }
 
-	@Override
-	public Palavra[] getTodas() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    return soleInstance;
+  }
 
-	@Override
-	public Palavra[] getPorTema(Tema tema) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private BDRPalavraRepository() {}
 
-	@Override
-	public Palavra getPorId(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  @Override
+  public long getProximoId() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
 
-	@Override
-	public void remover(Palavra palavra) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
+  @Override
+  public Palavra getPorId(long id) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	@Override
-	public void atualizar(Palavra palavra) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
+  @Override
+  public List<Palavra> getPorTema(Tema tema) {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
-	@Override
-	public void inserir(Palavra palavra) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
+  @Override
+  public List<Palavra> getTodas() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Palavra getPalavra(String palavra) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void inserir(Palavra palavra) throws RepositoryException {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void atualizar(Palavra palavra) throws RepositoryException {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void remover(Palavra palavra) throws RepositoryException {
+    // TODO Auto-generated method stub
+
+  }
+
+  
 }

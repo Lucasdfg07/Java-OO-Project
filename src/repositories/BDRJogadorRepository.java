@@ -1,55 +1,58 @@
 package repositories;
 
-import model.Jogador;
+import models.Jogador;
 
 public class BDRJogadorRepository implements JogadorRepository {
 
+  private static BDRJogadorRepository soleInstance = null;
 
-	private static BDRJogadorRepository soleInstance;
-	
-	private BDRJogadorRepository() {}
-	
-	public static BDRJogadorRepository getSoleInstance() {
-		if (soleInstance == null) {
-			soleInstance = new BDRJogadorRepository();
-		}
-		return soleInstance;
-	}
+  public static BDRJogadorRepository getSoleInstance() {
 
-	
-	@Override
-	public void remover(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
+    if (soleInstance == null) {
+      soleInstance = new BDRJogadorRepository();
+    }
 
-	@Override
-	public void atualizar(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
+    return soleInstance;
+  }
 
-	@Override
-	public void inserir(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public Jogador getPorId(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private BDRJogadorRepository() {
+  }
 
-	@Override
-	public long getProximoId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+  @Override
+  public long getProximoId() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
 
-	@Override
-	public Jogador[] getPorNome(String nome) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  @Override
+  public Jogador getPorId(Long id) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Jogador getPorNome(String nome) {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public void inserir(Jogador jogador) throws RepositoryException {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void atualizar(Jogador jogador) throws RepositoryException {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  public void remover(Jogador jogador) throws RepositoryException {
+    // TODO Auto-generated method stub
+
+  }
+
+  
 }

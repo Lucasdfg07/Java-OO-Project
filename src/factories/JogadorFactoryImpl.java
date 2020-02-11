@@ -1,39 +1,47 @@
 package factories;
 
-import model.Jogador;
+import factories.EntityFactory;
+import models.Jogador;
 import repositories.JogadorRepository;
-import repositories.Repository;
+import repositories.RepositoryException;
 
 public class JogadorFactoryImpl extends EntityFactory implements JogadorFactory {
-	
-	private static JogadorFactoryImpl soleInstance;
-	private JogadorRepository jogadorRepository;
+  
+  private static JogadorFactoryImpl soleInstance;
+  
+  private JogadorFactoryImpl(JogadorRepository repository) {
+    super(repository);
+    
+  }
 
-	private JogadorFactoryImpl(Repository repository) {
-		super(repository);
-		
-	}
-	
-	public static JogadorFactoryImpl getSoleInstance() {
-		if(soleInstance == null )
-			soleInstance = new JogadorFactoryImpl(repository);
-		
-		return soleInstance;
-	}
-	
-	public static void createSoleInstance(JogadorRepository repository) {
-	}
-	
-	
-	
-	@SuppressWarnings("unused")
-	private JogadorFactory getJogadorFactory() {
-		return null;
-	}
+  public static JogadorFactoryImpl getSoleInstance() {
+	  
+    if (soleInstance == null) {
+      throw new RuntimeException("Erro! Jogador Factory não foi inicializada.");
+    }
 
-	@Override
-	public Jogador getJogador(String nome) {
-		return null;
-	}
+    return soleInstance;
+  }
+  
+  public static void createSoleInstance(JogadorRepository repository) {
+    soleInstance = new JogadorFactoryImpl(repository);
+  }
 
+  private JogadorRepository getJogadorRepository() {
+    return (JogadorRepository) getRepository();
+  }
+
+  @Override
+  public Jogador getJogador(String nome) {
+	  
+    Jogador j1 = Jogador.criar(getProximoId(), nome);
+
+    try {
+      getJogadorRepository().inserir(j1);
+    } catch (RepositoryException repositoryException) {
+      throw new RuntimeException("Erro! Jogador não foi salvo no repository.");
+    }
+
+    return j1;
+  }
 }

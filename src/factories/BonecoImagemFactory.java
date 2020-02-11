@@ -1,11 +1,11 @@
 package factories;
 
-import model.Boneco;
-import model.BonecoFactory;
-import model.BonecoImagem;
+import models.Boneco;
+import models.BonecoFactory;
+import models.BonecoImagem;
 
 public class BonecoImagemFactory implements BonecoFactory {
-	
+
 	private static BonecoImagemFactory soleInstance;
 	
 	private BonecoImagemFactory() {
@@ -26,5 +26,4 @@ public class BonecoImagemFactory implements BonecoFactory {
 		// TODO Auto-generated method stub
 		return BonecoImagem.getSoleInstance();
 	}
-
 }

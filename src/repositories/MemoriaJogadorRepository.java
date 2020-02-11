@@ -1,74 +1,78 @@
 package repositories;
 
-import java.util.HashMap;
-import model.Jogador;
-import model.Rodada;
+import java.util.ArrayList;
+import java.util.List;
+
+import models.Jogador;
+
 
 public class MemoriaJogadorRepository implements JogadorRepository {
-	
-	
-	private static MemoriaJogadorRepository soleInstance;
-	
-	private HashMap<Long, Jogador> pool = new HashMap<Long, Jogador>();
-	
-	private Jogador[] jogador;
-	
-	private MemoriaJogadorRepository() {
-		
-	}
-	
-	public static MemoriaJogadorRepository getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new MemoriaJogadorRepository();
-		
-		return soleInstance;	
-	}
 
-	@Override
-	public long getProximoId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+  private static MemoriaJogadorRepository soleInstance = null;
 
-	@Override
-	public Jogador getPorId(long id) {
-		// TODO Auto-generated method stub
-		return pool.get(id);
-	}
+  public static MemoriaJogadorRepository getSoleInstance() {
+    if (soleInstance == null) {
+      soleInstance = new MemoriaJogadorRepository();
+    }
+      
+    return soleInstance;
+  }
 
-	@Override
-	public Jogador[] getPorNome(String nome) {
-		// TODO Auto-generated method stub
-		jogador = null;
-		
-		int i=0;
-		
-		for (Jogador r : pool.values()) {
-			if(r.getNome().equals(nome))
-				jogador[i] = r;
-				i++;
-		    }
-		
-		return jogador;
-	}
+  private List<Jogador> pool;
 
-	@Override
-	public void inserir(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		this.pool.put(jogador.getId(), jogador);
-	}
+  private MemoriaJogadorRepository() {
+    pool = new ArrayList<>();
+  }
 
-	@Override
-	public void atualizar(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		this.pool.remove(jogador.getId());
-		this.pool.put(jogador.getId(), jogador);
-	}
+  @Override
+  public long getProximoId() {
+    return pool.size() + 1;
+  }
 
-	@Override
-	public void remover(Jogador jogador) throws RepositoryException {
-		// TODO Auto-generated method stub
-		this.pool.remove(jogador.getId());
-	}
+  @Override
+  public Jogador getPorId(Long id) {
+    for (Jogador jogador: pool) {
+      if (jogador.getId().equals(id)) {
+        return jogador;
+      }
+    }
 
+    throw new RuntimeException("Não foi possível encontra nenhuma jogador com o ID: " + id);
+  }
+
+  @Override
+  public Jogador getPorNome(String nome) {
+    for (Jogador jogador: pool) {
+      if (jogador.getNome().equals(nome)) {
+        return jogador;
+      }      
+    }
+
+    throw new RuntimeException("Não foi possível encontrar o jogador: " + nome);
+  }
+
+  @Override
+  public void inserir(Jogador jogador) throws RepositoryException {
+    if (pool.contains(jogador)) {
+      throw new RepositoryException("Jogador já está salvo no repositório");
+    }
+    pool.add(jogador);
+  }
+
+  @Override
+  public void atualizar(Jogador jogador) throws RepositoryException {
+    this.remover(jogador);
+    this.inserir(jogador);
+  }
+
+  @Override
+  public void remover(Jogador jogador) throws RepositoryException {
+    if (pool.contains(jogador)) {
+        pool.remove(jogador);
+    } else {
+        throw new RepositoryException("O jogador " + jogador + "não está presente no repositório");
+    }
+  }
+
+  
 }

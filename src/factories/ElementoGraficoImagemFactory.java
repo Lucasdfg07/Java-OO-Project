@@ -1,40 +1,42 @@
 package factories;
 
-import model.Boneco;
-import model.Letra;
+import models.Boneco;
+import models.Letra;
 
 public class ElementoGraficoImagemFactory implements ElementoGraficoFactory {
+  
+  private static ElementoGraficoImagemFactory soleInstance = null;
+  
+  private BonecoImagemFactory boneco;
+  private LetraImagemFactory letra;
 
-	private static ElementoGraficoImagemFactory soleInstance;
-	private BonecoImagemFactory bonecoImagemFactory;
-	private LetraImagemFactory letraImagemFactory;
-	
-	private ElementoGraficoImagemFactory() {
-		letraImagemFactory = LetraImagemFactory.getSoleInstance();
-		bonecoImagemFactory = BonecoImagemFactory.getSoleInstance();
-	}
-	
-	public static ElementoGraficoImagemFactory getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new ElementoGraficoImagemFactory();
-		
-		return soleInstance;
-	}
+  public static ElementoGraficoImagemFactory getSoleInstance() {
+	  
+    if (soleInstance == null) {
+      soleInstance = new ElementoGraficoImagemFactory();
+    }
 
-	@Override
-	public Boneco getBoneco() {
-		// TODO Auto-generated method stub
-		return bonecoImagemFactory.getBoneco();
-	}
+    return soleInstance;
+  }
 
-	@Override
-	public Letra getLetra(char codigo) {
-		return letraImagemFactory.getLetra(codigo);
-	}
+  private ElementoGraficoImagemFactory() {
+	  boneco = BonecoImagemFactory.getSoleInstance();
+	  
+	  letra = LetraImagemFactory.getSoleInstance();
+  }
 
-	@Override
-	public Letra getLetraEncoberta() {
-		return letraImagemFactory.getLetraEncoberta();
-	}
+  @Override
+  public Boneco getBoneco() {
+      return boneco.getBoneco();
+  }
 
+  @Override
+  public Letra getLetra(char codigo) {
+      return letra.getLetra(codigo);
+  }
+
+  @Override
+  public Letra getLetraEncoberta() {
+      return letra.getLetraEncoberta();
+  }
 }

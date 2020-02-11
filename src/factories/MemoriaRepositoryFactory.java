@@ -1,36 +1,47 @@
-package repositories;
+package factories;
+
+import repositories.JogadorRepository;
+import repositories.MemoriaJogadorRepository;
+import repositories.MemoriaPalavraRepository;
+import repositories.MemoriaRodadaRepository;
+import repositories.MemoriaTemaRepository;
+import repositories.PalavraRepository;
+import repositories.RodadaRepository;
+import repositories.TemaRepository;
 
 public class MemoriaRepositoryFactory implements RepositoryFactory {
 
   private static MemoriaRepositoryFactory soleInstance;
 
   private MemoriaRepositoryFactory() {
-
+	  
   }
 
   public static MemoriaRepositoryFactory getSoleInstance() {
+	  
     if (soleInstance == null) {
       soleInstance = new MemoriaRepositoryFactory();
     }
+    
+    
     return soleInstance;
   }
 
-  @Override
   public PalavraRepository getPalavraRepository() {
     return MemoriaPalavraRepository.getSoleInstance();
   }
 
-  @Override
+  
   public TemaRepository getTemaRepository() {
     return MemoriaTemaRepository.getSoleInstance();
   }
 
-  @Override
+  
   public RodadaRepository getRodadaRepository() {
     return MemoriaRodadaRepository.getSoleInstance();
   }
 
-  @Override
+  
   public JogadorRepository getJogadorRepository() {
     return MemoriaJogadorRepository.getSoleInstance();
   }

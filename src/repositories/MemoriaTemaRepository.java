@@ -1,62 +1,92 @@
 package repositories;
 
-import model.Tema;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import models.Tema;
 
 public class MemoriaTemaRepository implements TemaRepository {
-	
-	private static MemoriaTemaRepository soleInstance;
-	
-	private MemoriaTemaRepository() {
-		
-	}
-	
-	public static MemoriaTemaRepository getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new MemoriaTemaRepository();
-		
-		return soleInstance;	
-	}
 
-	@Override
-	public long getProximoId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+  private static MemoriaTemaRepository soleInstance = null;
 
-	@Override
-	public Tema getPorId(long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  public static MemoriaTemaRepository getSoleInstance() {
+      if (soleInstance == null) {
+        soleInstance = new MemoriaTemaRepository();
+      }
 
-	@Override
-	public Tema[] getPorNome(String nome) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+      return soleInstance;
+  }
 
-	@Override
-	public Tema[] getTodas() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+  private List<Tema> pool;
 
-	@Override
-	public void inserir(Tema tema) throws RepositoryException {
-		// TODO Auto-generated method stub
+  private MemoriaTemaRepository() {
+    pool = new ArrayList<>();
+  }
 
-	}
+  @Override
+  public long getProximoId() {
+    return pool.size() + 1;
+  }
 
-	@Override
-	public void atualizar(Tema tema) throws RepositoryException {
-		// TODO Auto-generated method stub
+  @Override
+  public Tema getPorId(Long id) {    
 
-	}
+    for (Tema tema: pool) {
+      if (tema.getId().equals(id)) {
+        return tema;
+      } 
+    }  
+    
+    throw new RuntimeException("Não foi encontrado nenhum tema com o ID = " + id);
+  }
 
-	@Override
-	public void remover(Tema tema) throws RepositoryException {
-		// TODO Auto-generated method stub
+  @Override
+  public List<Tema> getPorNome(String nome) {
 
-	}
+    List<Tema> temas = new ArrayList<>();
 
+    for (Tema tema: pool) {
+      String auxTema = tema.getNome().toLowerCase();
+      String auxNome = nome.toLowerCase();
+      if (auxTema.contains(auxNome)) {
+        temas.add(tema);
+      }
+    }
+
+    return temas;
+  }
+
+  @Override
+  public List<Tema> getTodos() {
+    return Collections.unmodifiableList(pool);
+  }
+
+  @Override
+  public void inserir(Tema tema) throws RepositoryException {
+    
+    if (pool.contains(tema)) {
+      throw new RepositoryException("O tema " + tema + " já está salvo no repositório.");
+    } else {
+      pool.add(tema);
+    }
+
+  }
+
+  @Override
+  public void atualizar(Tema tema) throws RepositoryException {
+    this.remover(tema);
+    this.inserir(tema);
+  }
+
+  @Override
+  public void remover(Tema tema) throws RepositoryException {
+    if (pool.contains(tema)) {
+        pool.remove(tema);
+    } else {
+        throw new RepositoryException("O tema " + tema + "não está presente no repositório");
+    }
+  }
+
+  
 }

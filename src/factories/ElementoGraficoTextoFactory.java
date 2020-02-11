@@ -1,40 +1,40 @@
 package factories;
 
-import model.Boneco;
-import model.Letra;
+import models.Boneco;
+import models.Letra;
 
 public class ElementoGraficoTextoFactory implements ElementoGraficoFactory {
-	
-	private static ElementoGraficoTextoFactory soleInstance;
-	private BonecoTextoFactory bonecoTextoFactory;
-	private LetraTextoFactory letraTextoFactory;
-	
-	private ElementoGraficoTextoFactory() {
-		letraTextoFactory = LetraTextoFactory.getSoleInstance();
-		bonecoTextoFactory = BonecoTextoFactory.getSoleInstance();
-	}
-	
-	public static ElementoGraficoTextoFactory getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new ElementoGraficoTextoFactory();
-		
-		return soleInstance;
-	}
 
-	@Override
-	public Boneco getBoneco() {
-		// TODO Auto-generated method stub
-		return bonecoTextoFactory.getBoneco();
-	}
+  private static ElementoGraficoTextoFactory soleInstance;
+  
+  private BonecoTextoFactory boneco;
+  private LetraTextoFactory letra;
 
-	@Override
-	public Letra getLetra(char codigo) {
-		return letraTextoFactory.getLetra(codigo);
-	}
+  private ElementoGraficoTextoFactory() {
+	  letra = LetraTextoFactory.getSoleInstance();
+	  boneco = BonecoTextoFactory.getSoleInstance();
+  }
 
-	@Override
-	public Letra getLetraEncoberta() {
-		return letraTextoFactory.getLetraEncoberta();
-	}
+  public static ElementoGraficoTextoFactory getSoleInstance() {
+	  
+    if (soleInstance == null) {
+      soleInstance = new ElementoGraficoTextoFactory();
+    }
+
+    return soleInstance;
+  }
+
+  public Boneco getBoneco() {
+    return boneco.getBoneco();
+  }
+
+  public Letra getLetra(char codigo) {
+    return letra.getLetra(codigo);
+  }
+
+  @Override
+  public Letra getLetraEncoberta() {
+    return letra.getLetraEncoberta();
+  }
 
 }

@@ -1,106 +1,95 @@
 package repositories;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import model.Palavra;
-import model.Tema;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import models.Palavra;
+import models.Tema;
 
 public class MemoriaPalavraRepository implements PalavraRepository {
-	
-	private static MemoriaPalavraRepository soleInstance;
-	
-	private HashMap<Long, Palavra> pool = new HashMap<Long, Palavra>();
-	
-	private Palavra[] palavra;
-	
-	private MemoriaPalavraRepository() {
-		
-	}
-	
-	public static MemoriaPalavraRepository getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new MemoriaPalavraRepository();
-		
-		return soleInstance;	
-	}
 
-	@Override
-	public long getProximoId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+  private static MemoriaPalavraRepository soleInstance = null;
 
-	@Override
-	public Palavra getPorId(long id) {
-		// TODO Auto-generated method stub
-		return pool.get(id);
-	}
+  public static MemoriaPalavraRepository getSoleInstance() {
+    if (soleInstance == null) {
+      soleInstance = new MemoriaPalavraRepository();
+    }
 
-	@Override
-	public Palavra[] getPorTema(Tema tema) {
-		// TODO Auto-generated method stub
-		palavra = null;
-		
-		int i=0;
-		
-		for (Palavra r : pool.values()) {
-			if(r.getTema().equals(tema))
-				palavra[i] = r;
-				i++;
-		    }
-		
-		return palavra;
-	}
+    return soleInstance;
+  }
 
-	@Override
-	public Palavra[] getTodas() {
-		return (Palavra[]) this.pool.values().toArray();
-	}
+  private List<Palavra> pool;
 
-	@Override
-	public Palavra getPalavra(String palavra) {
-		Palavra resultado = null;
-		
-		Iterator<Palavra> palavras = this.pool.values().iterator();
-		
-		while(palavras.hasNext()) {
-			Palavra p = palavras.next();
-			
-			if(p.comparar(palavra)) {
-				resultado = p;
-				break;
-			}
-		}
-		
-		return resultado;
-	}
+  private MemoriaPalavraRepository() {
+    pool = new ArrayList<>();
+  }
 
-	@Override
-	public void inserir(Palavra palavra) throws RepositoryException {
-		try {
-			if(!pool.containsValue(palavra))
-				this.pool.put(palavra.getId(), palavra);
-			
-		} catch(Exception e){
-			
-			e.getMessage();
-			
-			System.out.println("Palavra ja existe");
-		}
-		
+  @Override
+  public long getProximoId() {
+    return pool.size() + 1;
+  }
 
-	}
+  @Override
+  public Palavra getPorId(long id) {
+    for (Palavra palavra: pool) {
+      if (palavra.getId().equals(id)) {
+        return palavra;
+      }
+    }
 
-	@Override
-	public void atualizar(Palavra palavra) throws RepositoryException {
-		remover(palavra);
-		inserir(palavra);
-	}
+    throw new RuntimeException("Não foi possível encontra nenhuma palavra com o ID: " + id);
+  }
 
+  @Override
+  public List<Palavra> getPorTema(Tema tema) {
+    List<Palavra> palavras = new ArrayList<>();
 
-	@Override
-	public void remover(Palavra palavra) throws RepositoryException {
-		this.pool.remove(palavra.getId());
-	}
+    for (Palavra palavra: pool) {
+      if (palavra.getTema() == tema) {
+        palavras.add(palavra);
+      }
+    }
 
+    return palavras;
+  }
+
+  @Override
+  public List<Palavra> getTodas() {
+    return Collections.unmodifiableList(pool);
+  }
+
+  @Override
+  public Palavra getPalavra(String palavra) {
+    for (Palavra auxPalavra: pool) {
+      if (auxPalavra.comparar(palavra)) {
+        return auxPalavra;
+      }
+    }
+
+    throw new RuntimeException("Não foi possível encontrar a palavra: " + palavra);
+  }
+
+  @Override
+  public void inserir(Palavra palavra) throws RepositoryException {
+    if (pool.contains(palavra)) {
+      throw new RepositoryException("Palavra já está salvo no repositório");
+    }
+    pool.add(palavra);
+  }
+
+  @Override
+  public void atualizar(Palavra palavra) throws RepositoryException {
+    this.remover(palavra);
+    this.inserir(palavra);
+  }
+
+  @Override
+  public void remover(Palavra palavra) throws RepositoryException {
+    if (pool.contains(palavra)) {
+        pool.remove(palavra);
+    } else {
+        throw new RepositoryException("A palavra " + palavra + "não está presente no repositório");
+    }
+  }
 }

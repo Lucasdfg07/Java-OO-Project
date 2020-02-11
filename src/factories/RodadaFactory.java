@@ -1,11 +1,10 @@
 package factories;
 
-import model.Jogador;
-import model.Rodada;
+import models.Jogador;
+import models.Rodada;
 
 public interface RodadaFactory {
 	
-	public int getRodada(Jogador[] retorno);
-	public int getRodada(Jogador retorno);
+  public Rodada getRodada(Jogador jogador);
 
 }

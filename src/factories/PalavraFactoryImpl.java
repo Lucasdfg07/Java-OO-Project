@@ -1,43 +1,48 @@
 package factories;
 
-import model.Letra;
-import model.Palavra;
-import model.Tema;
+import models.Palavra;
+import models.Tema;
 import repositories.PalavraRepository;
-import repositories.Repository;
+import repositories.RepositoryException;
 
 public class PalavraFactoryImpl extends EntityFactory implements PalavraFactory {
 
-	private static PalavraFactoryImpl soleInstance;
-	private PalavraRepository palavraRepository;
-	
-	private Palavra p;
-	
-	protected PalavraFactoryImpl(Repository repository) {
-		super(repository);
-		// TODO Auto-generated constructor stub
-	}
-	
-	public static PalavraFactoryImpl getSoleInstance() {
-		if(soleInstance == null)
-			soleInstance = new PalavraFactoryImpl(repository);
-		
-		return soleInstance;
-	}
-	
-	public static void createSoleInstance(PalavraRepository repository) {
-		
-	}
-	
-	@SuppressWarnings("unused")
-	private PalavraRepository getPalavraRepository() {
-		return palavraRepository;
-		
-	}
+  private static PalavraFactoryImpl soleInstance;
+  
+  public static void createSoleInstance(PalavraRepository repository) {
+	  soleInstance = new PalavraFactoryImpl(repository);
+  }
 
-	@Override
-	public Letra[] getPalavra(String palavra, Tema tema) {
-		return p.getLetras();
-	}
+  public static PalavraFactoryImpl getSoleInstance() {
+	  
+    if (soleInstance == null) {
+      throw new RuntimeException("Palavra Factory não foi iniciado!");
+    }
 
+    return soleInstance;
+  }
+
+  private PalavraFactoryImpl(PalavraRepository repository) {
+    super(repository);
+  }
+
+  private PalavraRepository getPalavraRepository() {
+	  
+    return (PalavraRepository) getRepository();
+  
+  }
+
+  @Override
+  public Palavra getPalavra(String palavra, Tema tema) {
+    Palavra aux = Palavra.criar(getProximoId(), palavra, tema);
+
+    try {
+      getPalavraRepository().inserir(aux);
+    } catch (RepositoryException repositoryException) {
+      throw new RuntimeException("Erro! Palavra não foi salva no Repository!");
+    }
+
+    return aux;
+  }
+  
 }

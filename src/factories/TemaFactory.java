@@ -1,9 +1,9 @@
 package factories;
 
-import model.Tema;
+import models.Tema;
 
 public interface TemaFactory {
 	
-	public Tema[] getTema(String nome);
+  public Tema getTema(String nome);
 
 }

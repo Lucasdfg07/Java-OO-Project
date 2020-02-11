@@ -1,11 +1,11 @@
 package factories;
 
-import model.Boneco;
-import model.BonecoFactory;
-import model.BonecoTexto;
+import models.Boneco;
+import models.BonecoFactory;
+import models.BonecoTexto;
 
 public class BonecoTextoFactory implements BonecoFactory {
-	
+
 	private static BonecoTextoFactory soleInstance;
 	
 	private BonecoTextoFactory() {
@@ -22,5 +22,4 @@ public class BonecoTextoFactory implements BonecoFactory {
 	public Boneco getBoneco() {
 		return BonecoTexto.getSoleInstance();
 	}
-
 }
